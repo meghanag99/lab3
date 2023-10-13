@@ -131,7 +131,7 @@ most_used_ingredient <- boston_cocktails %>%
   arrange(desc(average_count))   # without normalization method
 ```
 
-On average the most used ingredient in the Boston Cocktails dataset is cranberry juice.
+On average the most used ingredient in the Boston Cocktails dataset is cranberry juice without nomalization and orange juice with normalization.
 
 ### Exercise 5
 
@@ -159,6 +159,8 @@ theme(axis.text=element_text(size=7),
 
 Describe describe the drinks represented by PC1?
 
+Less calories, sweet & syrupy, mildly bitter and moderate alcohol content
+
 ### Exercise 6
 
 ```{r}
@@ -181,7 +183,7 @@ drinks_data %>%
   )
 ```
 
-The characteristic alcoholic beverage of each of the first 4 principle components is \_\_\_.
+The characteristic alcoholic beverage of each of the first 4 principle components is PC1: blanco_tequila, PC2: dry_vermouth PC3: gin, PC4: vodka
 
 ### Exercise 7
 
@@ -193,3 +195,5 @@ recipes::bake(prepped_data,cleaned_table) %>% ggplot(aes(PC1, PC2, label = name)
 ```
 
 How would you interpret the results of a PCA analysis for a client?
+
+Both PC1 and PC2 exhibit a lack of focus on traditional cocktail drinks with undesirable attributes. This implies that they are not focused on traditional cocktails, making it less likely that they will contain cordials or liqueurs in addition to light cocktail classics. Instead of cocktails, PC1 focuses exclusively on strong, undiluted alcoholic beverages. PC2, in contrast, consists primarily of cocktails and has a substantial alcohol load while having less straight alcohol than it does.
