@@ -18,14 +18,19 @@ library(gt)         # for pretty tables?
 ```
 
 ```{r}
-install.packages("skimr")
+#install.packages("skimr")
 library(skimr)
 
 ```
 
 ```{r}
-install.packages("janitor")
+#install.packages("janitor")
 library(janitor)
+```
+
+```{r}
+library(recipes)
+library(dplyr)
 ```
 
 Load packages and data:
@@ -79,24 +84,53 @@ The **Leap Frog Highball** contains 2 of gin
 ### Exercise 3
 
 ```{r}
-recipe <- recipes::recipe(measure_number ~ name, data=boston_cocktails)
-rec <- recipe |>
-  recipes::step_log(measure_number) |>
-  recipes::step_dummy(name)
-rec_trained <- recipes::prep(rec, training = boston_cocktails, retain = TRUE)
+rec <- recipe( ~., data = boston_cocktails) |>
+  step_mutate(name, category, role = "id") |>
+  step_select(where(is.numeric)) |>
+  step_normalize(all_predictors()) |>
+  step_pca(all_predictors())
+
+prepped_data <- prep(rec)
+
+num_predictors <- length(names(prepped_data)) - 2  
+num_predictors
 ```
 
-\_\_\_ predictor variables are prepped by the recipe.
+7 predictor variables are prepped by the recipe.
 
 ### Exercise 4
 
-On average the most used ingredient in the Boston Cocktails dataset is \_\_\_\_.
+```{r}
+
+step_info <- tidy(prepped_data)
+
+normalization_info <- tidy(prepped_data, 1)
+
+ingredient_counts1 <- boston_cocktails1 |>
+  dplyr::group_by(ingredient) |>
+  dplyr::summarise(average_measure = mean(measure_number, na.rm = TRUE)) |>
+  dplyr::arrange(desc(average_measure))
+
+most_used_ingredient <- ingredient_counts1$ingredient[1]
+most_used_ingredient
+```
+
+On average the most used ingredient in the Boston Cocktails dataset is cranberry juice.
 
 ### Exercise 5
+
+```{r}
+
+
+```
 
 Describe describe the drinks represented by PC1?
 
 ### Exercise 6
+
+```{r}
+
+```
 
 The characteristic alcoholic beverage of each of the first 4 principle components is \_\_\_.
 
